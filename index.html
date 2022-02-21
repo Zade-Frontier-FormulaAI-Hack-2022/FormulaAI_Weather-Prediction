@@ -28,12 +28,16 @@
 
 <body>
     <header class="jumbotron jumbotron-fluid">
-        <h1 class="display-3"> Hackmakers Formula AI Hackathon 2022 </h1> <br>
-        <h1 class="display-1"> Team Zade Frontier </h1>
-        <h3 class="display-4"> Challenge 1 - Data Analytics </h3> <br>
-        <h6 class="lead"> Making accurate weather predictions / forecasts with Artificial Intellegence using historical
-            weather data
-            from the RedBull Racing eSports team. </h6>
+        <div data-aos="slide-up">
+            <h1 class="display-3"> Hackmakers Formula AI Hackathon 2022 </h1> <br>
+            <h1 class="display-1"> Team Zade Frontier </h1>
+            <h3 class="display-3"> Challenge 1 - Data Analytics </h3> <br>
+            <h6 class="lead"> Making accurate weather predictions / forecasts with Artificial Intellegence using
+                historical
+                weather data
+                from the RedBull Racing eSports team. </h6>
+        </div>
+
     </header>
 
     <main>
@@ -41,26 +45,28 @@
             <div class="code_description">
                 <h3> Importing required libraries </h3>
             </div>
-            <pre data-aos="fade-right"> <code class="python"> 
-                #import dependencies
-                import numpy as np 
-                import pandas as pd
-                import os
-                from datetime import datetime
-                import seaborn as sns
-                import matplotlib.pyplot as plt
-                
-                !pip install fancyimpute
-                from fancyimpute import IterativeImputer
-                
-                import warnings
-                warnings.filterwarnings("ignore")
-                pd.set_option('display.max_columns',None)
-                from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score,confusion_matrix
-                from sklearn.model_selection import train_test_split
-                from sklearn.ensemble import RandomForestClassifier
-                from sklearn.inspection import permutation_importance
-            </code></pre>
+            <pre>
+            <code class="python"> 
+            #import dependencies
+            import numpy as np 
+            import pandas as pd
+            import os
+            from datetime import datetime
+            import seaborn as sns
+            import matplotlib.pyplot as plt
+            
+            !pip install fancyimpute
+            from fancyimpute import IterativeImputer
+            
+            import warnings
+            warnings.filterwarnings("ignore")
+            pd.set_option('display.max_columns',None)
+            from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score,confusion_matrix
+            from sklearn.model_selection import train_test_split
+            from sklearn.ensemble import RandomForestClassifier
+            from sklearn.inspection import permutation_importance
+            </code>
+            </pre>
         </div>
 
 
@@ -68,36 +74,66 @@
             <div class="code_description">
                 <h3> Importing data </h3>
             </div>
-            <pre data-aos="fade-right"> <code class="python"> 
-                # load dataset
-                weatherdata = pd.read_csv('/kaggle/input/formulaaihackathon2022/weather.csv')
-    
-                #copy of wetherdata
-                df = weatherdata.copy()
+            <pre>
+            <code class="python"> 
+            # load dataset
+            weatherdata = pd.read_csv('/kaggle/input/formulaaihackathon2022/weather.csv')
+
+            #copy of wetherdata
+            df = weatherdata.copy()
             </code></pre>
         </div>
 
 
-        <div class="code_description code_section">
+        <div class="code_description code_section" data-aos="zoom-in">
             Exploratory Data Analysis (EDA) and Pre-Processing
         </div>
 
-        <div class="code">
-            <pre data-aos="fade-right"> <code class="python"> 
-                #drop columns(either based on variance or outliers)
-                irrelavant_features = ['M_PACKET_FORMAT', 'M_GAME_MAJOR_VERSION', 'M_GAME_MINOR_VERSION', 'M_PACKET_VERSION', 
-                       'M_PACKET_ID', 'M_FRAME_IDENTIFIER', 'M_SECONDARY_PLAYER_CAR_INDEX', 'M_BRAKING_ASSIST', 'M_SESSION_LINK_IDENTIFIER', 
-                       'M_PIT_RELEASE_ASSIST', 'M_ZONE_START', 'M_ZONE_FLAG', 'M_GAME_PAUSED', 'M_SLI_PRO_NATIVE_SUPPORT', 
-                       'M_SAFETY_CAR_STATUS', 'M_ERSASSIST','M_FORMULA', 'M_PIT_ASSIST', 'M_GEARBOX_ASSIST', 'M_SPECTATOR_CAR_INDEX', 'M_DYNAMIC_RACING_LINE_TYPE', 
-                       'M_PIT_SPEED_LIMIT', 'M_NETWORK_GAME', 'M_STEERING_ASSIST', 'M_IS_SPECTATING', 'M_DYNAMIC_RACING_LINE', 
-                       'M_DRSASSIST', 'M_NUM_MARSHAL_ZONES','GAMEHOST','Unnamed: 58']
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python"> 
+            #drop columns(either based on variance or outliers)
+            irrelavant_features = ['M_PACKET_FORMAT', 'M_GAME_MAJOR_VERSION', 'M_GAME_MINOR_VERSION', 'M_PACKET_VERSION', 
+                    'M_PACKET_ID', 'M_FRAME_IDENTIFIER', 'M_SECONDARY_PLAYER_CAR_INDEX', 'M_BRAKING_ASSIST', 'M_SESSION_LINK_IDENTIFIER', 
+                    'M_PIT_RELEASE_ASSIST', 'M_ZONE_START', 'M_ZONE_FLAG', 'M_GAME_PAUSED', 'M_SLI_PRO_NATIVE_SUPPORT', 
+                    'M_SAFETY_CAR_STATUS', 'M_ERSASSIST','M_FORMULA', 'M_PIT_ASSIST', 'M_GEARBOX_ASSIST', 'M_SPECTATOR_CAR_INDEX', 'M_DYNAMIC_RACING_LINE_TYPE', 
+                    'M_PIT_SPEED_LIMIT', 'M_NETWORK_GAME', 'M_STEERING_ASSIST', 'M_IS_SPECTATING', 'M_DYNAMIC_RACING_LINE', 
+                    'M_DRSASSIST', 'M_NUM_MARSHAL_ZONES','GAMEHOST','Unnamed: 58']
 
-                df.drop(columns=irrelavant_features,inplace=True)
+            df.drop(columns=irrelavant_features,inplace=True)
 
-                #split the feats into discrete and continous
-                cont_feats = [feat for feat in df.columns if df[feat].nunique()>50]
-                scat_feats = [feat for feat in df.columns if feat not in cont_feats]
-</code></pre>
+            #split the feats into discrete and continous
+            cont_feats = [feat for feat in df.columns if df[feat].nunique()>50]
+            scat_feats = [feat for feat in df.columns if feat not in cont_feats]
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            def missing_values_table(df):
+                zero_val = (df == 0.00).astype(int).sum(axis=0)
+                mis_val = df.isnull().sum()
+                mis_val_percent = 100 * df.isnull().sum() / len(df)
+                mz_table = pd.concat([zero_val, mis_val, mis_val_percent], axis=1)
+                mz_table = mz_table.rename(
+                columns = {0 : 'Zero_Values', 1 : 'Missing_Values', 2 : 'Missing_Values%'})
+                mz_table['Sum_Zero_Plus_Missing_Values'] = mz_table['Zero_Values'] + mz_table['Missing_Values']
+                mz_table['%_Sum_Zero_Plus_Missing_Values'] = 100 * mz_table['Sum_Zero_Plus_Missing_Values'] / len(df)
+                mz_table['Data Type'] = df.dtypes
+                mz_table = mz_table[
+                    mz_table.iloc[:,1] != 0].sort_values(
+                'Missing_Values%', ascending=False).round(1)
+                print ("Your selected dataframe has " + str(df.shape[1]) + " columns and " + str(df.shape[0]) + " Rows.\n"      
+                    "There are " + str(mz_table.shape[0]) +
+                    " columns that have missing values.")
+                #mz_table.to_excel('D:/sampledata/missing_and_zero_values.xlsx', freeze_panes=(1,0), index = False)
+                return mz_table
+
+            missing_values_df = missing_values_table(df)
+                    </code>
+                </pre>
         </div>
 
     </main>

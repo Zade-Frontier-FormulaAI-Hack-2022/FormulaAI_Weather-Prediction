@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zade Frontier - Formula AI Hack '22</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+    <!-- Scroll animations -->
+    <link rel='stylesheet' href='https://unpkg.com/aos@2.3.0/dist/aos.css'>
+
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+
+<body>
+    <header class="jumbotron jumbotron-fluid">
+        <h1 class="display-3"> Hackmakers Formula AI Hackathon 2022 </h1> <br>
+        <h1 class="display-1"> Team Zade Frontier </h1>
+        <h3 class="display-4"> Challenge 1 - Data Analytics </h3> <br>
+        <h6 class="lead"> Making accurate weather predictions / forecasts with Artificial Intellegence using historical
+            weather data
+            from the RedBull Racing eSports team. </h6>
+    </header>
+
+    <main>
+        <div class="code" data-aos="fade-right">
+            <div class="code_description">
+                <h3> Importing required libraries </h3>
+            </div>
+            <pre data-aos="fade-right"> <code class="python"> 
+                #import dependencies
+                import numpy as np 
+                import pandas as pd
+                import os
+                from datetime import datetime
+                import seaborn as sns
+                import matplotlib.pyplot as plt
+                
+                !pip install fancyimpute
+                from fancyimpute import IterativeImputer
+                
+                import warnings
+                warnings.filterwarnings("ignore")
+                pd.set_option('display.max_columns',None)
+                from sklearn.metrics import accuracy_score,f1_score,recall_score,precision_score,confusion_matrix
+                from sklearn.model_selection import train_test_split
+                from sklearn.ensemble import RandomForestClassifier
+                from sklearn.inspection import permutation_importance
+            </code></pre>
+        </div>
+
+
+        <div class="code" data-aos="fade-right">
+            <div class="code_description">
+                <h3> Importing data </h3>
+            </div>
+            <pre data-aos="fade-right"> <code class="python"> 
+                # load dataset
+                weatherdata = pd.read_csv('/kaggle/input/formulaaihackathon2022/weather.csv')
+    
+                #copy of wetherdata
+                df = weatherdata.copy()
+            </code></pre>
+        </div>
+
+
+        <div class="code_description code_section">
+            Exploratory Data Analysis (EDA) and Pre-Processing
+        </div>
+
+        <div class="code">
+            <pre data-aos="fade-right"> <code class="python"> 
+                #drop columns(either based on variance or outliers)
+                irrelavant_features = ['M_PACKET_FORMAT', 'M_GAME_MAJOR_VERSION', 'M_GAME_MINOR_VERSION', 'M_PACKET_VERSION', 
+                       'M_PACKET_ID', 'M_FRAME_IDENTIFIER', 'M_SECONDARY_PLAYER_CAR_INDEX', 'M_BRAKING_ASSIST', 'M_SESSION_LINK_IDENTIFIER', 
+                       'M_PIT_RELEASE_ASSIST', 'M_ZONE_START', 'M_ZONE_FLAG', 'M_GAME_PAUSED', 'M_SLI_PRO_NATIVE_SUPPORT', 
+                       'M_SAFETY_CAR_STATUS', 'M_ERSASSIST','M_FORMULA', 'M_PIT_ASSIST', 'M_GEARBOX_ASSIST', 'M_SPECTATOR_CAR_INDEX', 'M_DYNAMIC_RACING_LINE_TYPE', 
+                       'M_PIT_SPEED_LIMIT', 'M_NETWORK_GAME', 'M_STEERING_ASSIST', 'M_IS_SPECTATING', 'M_DYNAMIC_RACING_LINE', 
+                       'M_DRSASSIST', 'M_NUM_MARSHAL_ZONES','GAMEHOST','Unnamed: 58']
+
+                df.drop(columns=irrelavant_features,inplace=True)
+
+                #split the feats into discrete and continous
+                cont_feats = [feat for feat in df.columns if df[feat].nunique()>50]
+                scat_feats = [feat for feat in df.columns if feat not in cont_feats]
+</code></pre>
+        </div>
+
+    </main>
+
+
+    <script src='https://unpkg.com/aos@2.3.0/dist/aos.js'></script>
+    <script src="./scripts/script.js"></script>
+</body>
+
+</html>

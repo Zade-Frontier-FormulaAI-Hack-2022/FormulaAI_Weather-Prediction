@@ -9,6 +9,8 @@
   display: flex;
   padding-left: 20px;
   padding-right: 20px;
+  height: 8vh;
+  align-items: flex-start;
 }
 
 .navbar div{
@@ -23,7 +25,7 @@
 }
 header {
   max-height: fit-content;
-  height: 100vh; /*chnage with repect to screen*/
+  height: 92vh; /*chnage with repect to screen*/
   /* margin: 50px auto; */
   /* padding-top: 50px; */
   /* background: #580404; */

@@ -1,0 +1,7 @@
+video for header (greyscale)
+font to calibiri
+change grey backgrounds of code (white with borders or some pastel colors)
+code shouldnt be visible with header
+code color red remove
+
+iframe auto eda, add border

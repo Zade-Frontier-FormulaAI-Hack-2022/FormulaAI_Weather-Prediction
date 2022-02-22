@@ -56,11 +56,12 @@ header h2 span{
   color : rgb(169,169,169);
 }
 
+
 .code_description {
   font-size: 1.5em;
   line-height: 1.1;
   padding-left: 30px;
-  color: rgb(88, 4, 4);;
+  color: rgb(88, 4, 4);
   margin-top: 10px;
 }
 

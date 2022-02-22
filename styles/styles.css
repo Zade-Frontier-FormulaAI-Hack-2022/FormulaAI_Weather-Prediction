@@ -23,7 +23,7 @@
 }
 header {
   max-height: fit-content;
-  height: 500px; /*chnage with repect to screen*/
+  height: 100vh; /*chnage with repect to screen*/
   /* margin: 50px auto; */
   /* padding-top: 50px; */
   /* background: #580404; */

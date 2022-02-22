@@ -35,6 +35,7 @@ $('#myCarousel').carousel();
 // }
 
 
-// window.addEventListener('DOMContentLoaded', (event) => {
-//   includeHTML();
-// });
+window.addEventListener('DOMContentLoaded', (event) => {
+  // includeHTML();
+  // applyCodeColors();
+});

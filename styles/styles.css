@@ -100,8 +100,14 @@ header h2{
 code
 {
   /* background-color: #353c3f28 !important; */
-  background: rgb(230,252,250) !important;
-background: linear-gradient(0deg, rgba(230,252,250,1) 22%, rgba(252,242,230,1) 81%) !important;
+  /* background: rgb(230,252,250) !important;
+background: linear-gradient(0deg, rgba(230,252,250,1) 22%, rgba(252,242,230,1) 81%) !important; */
+
+/* background: rgb(246,230,230) !important;
+background: radial-gradient(circle, rgba(246,230,230,1) 24%, rgba(232,217,237,0.7679446778711485) 79%) !important; */
+
+background: rgb(154,202,164) !important;
+background: linear-gradient(90deg, rgba(154,202,164,1) 0%, rgba(241,227,166,1) 50%, rgba(236,236,236,1) 100%) !important;
   border: 3px solid rgb(230, 252, 252) !important;
   padding-top: 0 !important;
   padding: 0 !important;

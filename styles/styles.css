@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Shizuru&display=swap');
 * {
   margin: 0;
   padding: 0;
@@ -81,6 +82,7 @@ header h2{
   /* color: #c09000; */
   color: #18272e;
   margin-top: 10px;
+  font-family: 'Shizuru', cursive;
 }
 
 .code_section {
@@ -92,10 +94,9 @@ header h2{
 code
 {
   /* background-color: #353c3f28 !important; */
-  background: rgb(238,174,202) !important;
-background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%) !important;
-  border-color: rgb(53, 60, 63) !important;
-  border: 3px solid rgb(53, 60, 63) !important;
+  background: rgb(230,252,250) !important;
+background: linear-gradient(0deg, rgba(230,252,250,1) 22%, rgba(252,242,230,1) 81%) !important;
+  border: 3px solid rgb(230, 252, 252) !important;
   padding-top: 0 !important;
   padding: 0 !important;
   /* margin: 0 !important; */

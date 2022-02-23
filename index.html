@@ -36,7 +36,7 @@
         </div>
         <div class="navbar">
             <h3>Powered by</h3>
-            <h2 >Oracle</h2>
+            <h2>Oracle</h2>
         </div>
     </nav>
     <header class="jumbotron jumbotron-fluid" data-aos="fade-up">
@@ -46,16 +46,59 @@
 
         <div class="header_text">
             <h1 class="display-3"> Hackmakers Formula AI Hackathon 2022 </h1> <br>
-            <h1 class="display-1" > Team Zade Frontier </h1>
-                <div class="challenge">
-                    <h1 class="display-4">Challenge 1 - Data Analytics</h3> <br>
+            <h1 class="display-1"> Team Zade Frontier </h1>
+            <div class="challenge">
+                <h1 class="display-4">Challenge 1 - Data Analytics</h3> <br>
                     <h6 class="lead"> Making accurate weather predictions / forecasts with Artificial Intellegence using
                         historical
                         weather data
                         from the RedBull Racing eSports team. </h6>
-                </div>
+            </div>
         </div>
     </header>
+
+    <div class="team_members" data-aos="fade-out">
+        <h1 style="font-size: 5rem;"> The Team </h1>
+        <ul>
+            <li>
+                <div class="team_member">
+                    <h3> Krishna Cheedella </h3>
+                    <h6> Singapore </h6>
+                </div>
+            </li>
+            <li>
+                <div class="team_member">
+                    <h3> Tom Mathews </h3>
+                    <h6> India </h6>
+                </div>
+            </li>
+            <li>
+                <div class="team_member">
+                    <h3> Sumith K K </h3>
+                    <h6> India </h6>
+                </div>
+            </li>
+            <li>
+                <div class="team_member">
+                    <h3> Arun Chaudhary </h3>
+                    <h6> Nepal </h6>
+                </div>
+            </li>
+            <li>
+                <div class="team_member">
+                    <h3> Rohan Ahmed </h3>
+                    <h6> Pakistan </h6>
+                </div>
+            </li>
+            <li>
+                <div class="team_member">
+                    <h3> Sohaib Ahmed Abbasi </h3>
+                    <h6> Pakistan </h6>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <hr> 
 
     <main>
         <div class="code" data-aos="fade-right">
@@ -119,8 +162,15 @@
             </pre>
         </div>
 
-        <div class="graphs">
-            <iframe src="weather_report.html"></iframe>
+        <div class="graphs" data-aos="fade-right">
+            <a href="weather_report.html" target="_blank">
+                <svg width="70px" height="70px" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z" />
+                </svg>
+                View Graphs
+            </a>
         </div>
 
 
@@ -147,6 +197,9 @@
             </pre>
         </div>
 
+        <div class="code_description">
+            <h3> Data Wrangling </h3>
+        </div>
         <div class="code" data-aos="fade-right">
             <pre>
             <code class="python">
@@ -172,14 +225,20 @@
                 missing_values_df = missing_values_table(df)
                 missing_values_df
                 </code>
-                </pre>
+            </pre>
         </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output1.png">
+        </div>
+
         <div class="code_description code_description_small" data-aos="fade-right">
-            Since we have 27.3% of missing values in 8 Features, we shall use Multiple Imputations using Chained Equations - MICE to impute the values
+            Since we have 27.3% of missing values in 8 Features, we shall use Forward Fill to Fill the values. The reason for using forward fill is due to heavy existence of duplicates
+        </div>
         </div>
 
         <div w3-include-html="weather_report.html"></div>
-        
+
         <div class="code" data-aos="fade-right">
             <pre>
             <code class="python">
@@ -206,21 +265,719 @@
             
             #aggregate df by  M_SESSION_UID - M_SESSION_TIME - M_TIME_OFFSET
             df_agg = df.groupby(['M_SESSION_UID','M_SESSION_TIME','M_TIME_OFFSET']).mean().reset_index()
+            df_agg
             </code>
             </pre>
         </div>
 
-        <div class="code_description code_section" data-aos="fade-right">
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output18.png">
+        </div>
+
+
+        <!-- <div class="code_description code_section" data-aos="fade-right">
             Random Forest
+        </div> -->
+
+        <div class="code_description">
+            Using Random Forest Classifier to predict the weather accuracy using the Target 'M_WEATHER'
         </div>
 
         <div class="code" data-aos="fade-right">
             <pre>
             <code class="python">
+            target = 'M_WEATHER'
+            # df_agg = df_agg.drop(columns=['date'])
+
+            X = df_agg.drop(columns=target)
+            y = df_agg[target]
+            X_train, X_test, y_train, y_test = train_test_split(X, y,shuffle=False,random_state=42)
+            #random forest classifier
+            rf = RandomForestClassifier(n_estimators=100, random_state=42)
+            rf.fit(X_train, y_train)
             </code>
             </pre>
         </div>
+
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #predict for train and validation data
+            pred_train = rf.predict(X_train)
+            pred_test = rf.predict(X_test)
+            </code>
+            </pre>
+        </div>
+
+
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            def metrics_print(actual,predicted, data_set):
+                print(f'{data_set}')
+                print('ACCURACY',accuracy_score(actual,predicted))
+                print('RECALL', recall_score(actual,predicted,average='weighted'))
+                print('PRECISION',precision_score(actual,predicted,average='weighted'))
+                print('F1-SCORE',f1_score(actual,predicted,average='weighted'))
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            metrics_print(y_train,pred_train,'train')
+            metrics_print(y_test,pred_test,'test')
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output2.png">
+        </div>
+        <br>
+
+        <div class="code_description code_description_small" data-aos="fade-right">
+            The accuracy of the Target Variable 'M_WEATHER' is 83.2% which is good.
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            discrete_feats = [col for col in df_agg.columns if df_agg[col].nunique() <25]
+            cont_feats = [col for col in df_agg.columns if col not in discrete_feats]
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #discrete features
+            f, ax = plt.subplots(4, 4, figsize = (15 , 15))
+            axx = ax.flatten()
+            
+            for index, col in enumerate(discrete_feats):
+                df_agg[ col].value_counts().plot.pie(autopct = '%1.1f%%', ax = axx[index])
+            </code>
+            </pre>
+        </div>
+
+
+        <!-- <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #bivariate analysis of categorical features with target
+            f, ax = plt.subplots(6, 3, figsize = (20 , 15))
+            axx = ax.flatten()
+            
+            for index, col in enumerate(discrete_feats):
+                sns.countplot(data = df_agg, x = col, hue = target, ax = axx[index])
+            </code>
+            </pre>
+        </div> -->
+
+
+
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #bivariate analysis of categorical features with target
+            f, ax = plt.subplots(5, 3, figsize = (20,20))
+            axx = ax.flatten()
+            for index, col in enumerate(cont_feats):
+            #     plt.figure(figsize=(15,8))
+                sns.distplot(df_agg[col],ax=axx[index])
+            #     plt.show()
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output3.png">
+        </div>
         
+
+        <div class="code_description code_section" data-aos="fade-right">
+            Feature Engineering
+        </div>
+
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #mean TRACK TEMP AND AIR TEMP per session id and hour
+            feats_gr  = ['M_SESSION_UID','hour']
+            feats_agg = ['M_TRACK_TEMPERATURE','M_AIR_TEMPERATURE']
+            dftemp = df_agg.groupby(feats_gr)[feats_agg].agg([np.mean])
+            cols = dftemp.columns
+            dftemp.columns = ['_SessionID_Hour_'.join(c) for c in cols]
+            dftemp.reset_index(inplace = True)
+            # join df with df_agg
+            df_agg = df_agg.merge(dftemp, on = feats_gr, how = 'left')
+            
+            #drop features by variance
+            dropfeats = ['M_PIT_STOP_WINDOW_IDEAL_LAP','M_FORECAST_ACCURACY']
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            # session features 
+            sess_feats = ['M_SESSION_UID','M_SESSION_TYPE','M_SESSION_TIME','M_SESSION_TIME_LEFT','M_SESSION_DURATION']
+            </code>
+            </pre>
+        </div>
+
+        <div class="code_description code_section" data-aos="fade-right">
+            Gaussian Mixture Model (GMM) for Target Recalibration
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            df.M_WEATHER.value_counts()
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output17.png">
+        </div>
+
+        <div class="code_description code_description_small" data-aos="fade-right">
+            Based on the value counts of Target Variable 'M_WEATHER', there are missing values [3,4] which would cause a misleading machine learning prediction.
+            <ul>
+                <li>
+                    To overcome such a crisis, we re-calibrate the Target Variable by using GMM Classification Model and create a new Target Variable 'WEATHER_CLASS'
+                </li>
+                <li>
+                    Top 3 highly correlavant features are taken and GMM Classification Model is ran on them to get the GMM_CLASS with 6 WEATHER Classes.
+                </li>
+            </ul>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #get high correlated features for GMM model
+            highcorrelationfeats = ['M_AIR_TEMPERATURE', 'M_TRACK_TEMPERATURE_SessionID_Hour_mean','M_TRACK_TEMPERATURE']
+            tempdf = df_agg[highcorrelationfeats]
+            
+            #Fit data using GMM
+            gmm = GaussianMixture(n_components=6, random_state = 1)
+            gmm.fit(tempdf)
+            tempdf['GMM_CLASS'] = gmm.predict(tempdf)
+            tempdf
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output4.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            tempdf['GMM_CLASS'].value_counts()
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output5.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            tempdf.groupby(['GMM_CLASS'])['M_TRACK_TEMPERATURE'].median().sort_values(ascending=False)
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output6.png">
+        </div>
+
+        <div class="code_description code_description_small" data-aos="fade-right">
+            GMM_CLASS values are created with 6 values that are highly correlavant to the top 3 features ['M_AIR_TEMPERATURE', 'M_TRACK_TEMPERATURE_SessionID_Hour_mean','M_TRACK_TEMPERATURE']
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            fig = plt.figure(figsize = (5,5))
+            sns.set(style = 'whitegrid')
+            
+            sns.barplot(df_agg.M_WEATHER, df_agg.M_TRACK_TEMPERATURE)
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output7.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            for feat in tempdf.columns:
+            sns.displot(data=tempdf, x=feat, hue=df_agg['M_WEATHER'],
+                        kind='kde',palette=sns.color_palette('bright')[:4],height=4,aspect=2.2)
+            plt.show()
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output8.png">
+        </div>
+
+        <div class="code_description code_description_small" data-aos="fade-right">
+            We compare the existing weather density distribution based on the highly correlated features to map the GMM_CLASS values.
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #map gmm class
+            gmmlabel = list(tempdf.groupby(['GMM_CLASS'])['M_TRACK_TEMPERATURE'].median().sort_values(ascending=False).index.values)
+            print('GMM_CLASS:', gmmlabel)
+            
+            
+            weatherlabel = [0,1,2,3,4,5]
+            print('M_WEATHER:',weatherlabel)
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output9.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #map function to map GMM_CLASS to M_WEATHER
+            gmm_map = dict(zip(gmmlabel,weatherlabel))
+            print(gmm_map)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #map gmm class
+            df_agg['WEATHER_CLASS'] = tempdf['GMM_CLASS'].map(gmm_map)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            df_agg['WEATHER_CLASS'].value_counts()
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output10.png">
+        </div>
+        
+        <div class="code" data-aos="fade-right">
+            <div class="code_description">
+                Random Forest Classifier to check the accuracy of the new Target Variable 'WEATHER_CLASS'
+            </div>
+            <pre>
+            <code class="python">
+            target = 'WEATHER_CLASS'
+            # df_agg = df_agg.drop(columns=['date'])
+            
+            X = df_agg.drop(columns=['WEATHER_CLASS','M_WEATHER'])
+            y = df_agg[target]
+            X_train, X_test, y_train, y_test = train_test_split(X, y,shuffle=False,random_state=786)
+            #random forest classifier
+            rf = RandomForestClassifier(n_estimators=100, random_state=786)
+            rf.fit(X_train, y_train)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #predict for train and validation data
+            pred_train = rf.predict(X_train)
+            pred_test = rf.predict(X_test)
+            
+            metrics_print(y_train,pred_train,'train')
+            metrics_print(y_test,pred_test,'test')
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output11.png">
+        </div>
+
+        <div class="code_description code_description_small" data-aos="fade-right">
+            The accuracy of new Target Variable 'WEATHER_CLASS' is 85.1% and is better than the original target variable 'M_WEATHER' which is 83.2%.
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            con_df = pd.DataFrame(list(zip(y_test.values,pred_test)),columns=['y_Actual','y_Predicted'])
+            confusion_matrix = pd.crosstab(con_df['y_Actual'], con_df['y_Predicted'], rownames=['Actual'], colnames=['Predicted'])
+            print (confusion_matrix)
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output12.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            con_df.value_counts()
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output13.png">
+        </div>
+
+        <div class="code_description code_section" data-aos="fade-right">
+            TabNet Classifier
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <div class="code_description">
+                Predicting Weather using TabNet Classifier Algorithm
+            </div>
+            <pre>
+            <code class="python">
+            from sklearn.metrics import accuracy_score
+
+            from sklearn.preprocessing import LabelEncoder
+            from sklearn.model_selection import StratifiedKFold
+            
+            !pip install pytorch-tabnet
+            from pytorch_tabnet.tab_model import TabNetClassifier
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            cols = df_agg.columns.to_list()
+            cols.remove('WEATHER_CLASS')
+            cols.remove('M_WEATHER')
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finaldf = df_agg.copy()
+            finaldf.drop(columns=['M_WEATHER'], inplace = True)
+            finaldf.columns
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output14.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <div class="code_description" data-aos="fade-right">
+                Split the data into train and test data sets with a 70:30 ratio
+            </div>
+            <pre>
+            <code class="python">
+            from sklearn.model_selection import train_test_split
+
+            training_data, testing_data = train_test_split(finaldf, test_size=0.3, random_state=25, shuffle = False)
+            
+            print(f"No. of training examples: {training_data.shape[0]}")
+            print(f"No. of testing examples: {testing_data.shape[0]}")
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output15.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <div class="code_description" data-aos="fade-right">
+                Drop Target Variable 'WEATHER_CLASS' for test data
+            </div>
+            <pre>
+            <code class="python">
+            test = testing_data.copy()
+            test.drop(columns=['WEATHER_CLASS'], inplace = True)
+            training_data.shape
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output16.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            data = training_data.copy()
+            data.shape
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            final_pred_df = finaldf.copy()
+            final_pred_df.drop(columns=['WEATHER_CLASS'], inplace = True)
+            final_pred_df.shape
+            </code>
+            </pre>
+        </div>
+
+
+        <div class="code" data-aos="fade-right">
+            <div class="code_description">
+                Fit and Tranform the TabNet Classifier Model
+            </div>
+            <pre>
+            <code class="python">
+            N_folds = 5
+            seeds = [455, 485, 659, 16, 5659]
+            
+            data_preds = np.zeros((data.shape[0], 6))
+            test_preds = np.zeros((test.shape[0], 6))
+            final_preds = np.zeros((final_pred_df.shape[0], 6))
+            
+            feature_importance = pd.DataFrame()
+            
+            for seed in seeds:
+                print('---------------------------------------')
+                print('SEED : ', seed)
+                print('---------------------------------------')
+                
+                
+                data['fold'] = -1
+                skf = StratifiedKFold(n_splits=N_folds, shuffle=False, random_state=seed)
+                for f, (_, idxs) in enumerate(skf.split(data, data['WEATHER_CLASS'])):
+                    data.loc[idxs, 'fold'] = f
+                    
+                for F in range(N_folds):
+                    
+                    print('FOLD : ', F)
+                    
+                    train = data[data['fold'] != F].reset_index(drop=True)
+                    valid = data[data['fold'] == F].reset_index(drop=True)
+                    
+                    
+                    model = TabNetClassifier(verbose=0,seed=42)
+                    model.fit(X_train=train[cols].values, y_train=train['WEATHER_CLASS'].values,
+                                eval_set=[(train[cols].values, train['WEATHER_CLASS'].values), (valid[cols].values, valid['WEATHER_CLASS'].values)],
+                                eval_name=['train', 'valid'],
+                                patience=5, max_epochs=100,
+                                eval_metric=['accuracy'],
+                                batch_size=1024, virtual_batch_size=256)
+                    
+                    
+                    preds = model.predict_proba(valid[cols].values)
+                    data_preds[data[data['fold'] == F].index] += preds
+                    
+                    preds = model.predict_proba(test[cols].values)
+                    test_preds += preds
+                    
+                    preds = model.predict_proba(final_pred_df[cols].values)
+                    final_preds += preds
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img style="width:40%" src="images/output20.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            data_preds = data_preds / (len(seeds))
+            test_preds = test_preds / (len(seeds) * N_folds)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finalpred_avg= final_preds/ (len(seeds) * N_folds)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finaltestdf = final_pred_df.copy()
+            #predict the weather class  prob
+            prob = finalpred_avg
+            finaltestdf['Weather_Prediction_Class_Probability'] = np.max(prob,axis=1)
+            #predict  weather class
+            finaltestdf['Weather_Prediction_Class']  = np.argmax(prob,axis=1)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code_description code_section" data-aos="fade-right">
+            Multiclass Classification (TensorFlow)
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <div class="code_description">
+                Predict Weather using Multi-Class Classification (TensorFlow)
+            </div>
+            <pre>
+            <code class="python">
+            import tensorflow as tf
+            from tensorflow.keras.optimizers import Adam
+            from sklearn.preprocessing import StandardScaler
+            
+            #copy of df_agg
+            dffinal = df_agg.copy()
+            
+            #split data into target and features
+            X = df_agg.drop(columns=['M_WEATHER','WEATHER_CLASS'])
+            Y = df_agg['WEATHER_CLASS']
+            
+            #scale X using standardscaler
+            std_scale = StandardScaler()
+            X_scaled = std_scale.fit_transform(X)
+            X_df = pd.DataFrame(X_scaled,columns=X.columns)
+            
+            #train test split 
+            X_train, X_test, y_train, y_test = train_test_split(X_df, Y,shuffle=False,random_state=42)
+            
+            
+            NN_model = tf.keras.models.Sequential([
+                    tf.keras.layers.Input(shape=X.shape[1]),
+                    tf.keras.layers.Dense(128, activation='relu'),
+                    tf.keras.layers.Dropout(0.3),
+                    tf.keras.layers.Dense(64, activation='relu'),
+                    tf.keras.layers.Dropout(0.3),
+                    tf.keras.layers.Dense(16, activation='relu'),
+                    tf.keras.layers.Dense(6, activation='softmax') ])
+            
+            
+            NN_model.compile(Adam(lr = 0.01), 
+                            loss='sparse_categorical_crossentropy',
+                            metrics=['accuracy'])
+            
+            
+            NN_model.fit(X_train,y_train, 
+                        validation_data=(X_test, y_test), 
+                        epochs=50, batch_size=10000, verbose=1,
+                        )                
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img style="width:60%" src="images/output21.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            #predict the weather class  prob
+            #prob = finalpred_avg
+            xnn_df = X.copy()
+            
+            xnn_df['Weather_Prediction_Class_Probability'] = np.max(NN_model.predict(X))
+            #predict  weather class
+            xnn_df['Weather_Prediction_Class']  = np.argmax(NN_model.predict(X))
+            xnn_df
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            NN_model.predict(X)
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finaltestdf['Ensemble_weather_prob'] = (xnn_df['Weather_Prediction_Class_Probability'] + finaltestdf['Weather_Prediction_Class_Probability'])/2
+            </code>
+            </pre>
+        </div>
+
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finalpreddf = finaltestdf[['M_SESSION_UID','M_SESSION_TIME','M_TIME_OFFSET','Weather_Prediction_Class','Ensemble_weather_prob']]
+
+            #merge dfcopy with finalpreddf to get timestamp
+            df_sessid_time = dfcopy.drop_duplicates(subset=['M_SESSION_UID','TIMESTAMP'])
+            finaldfpred_with_timestamp = finalpreddf.merge(df_sessid_time[["M_SESSION_UID","M_SESSION_TIME",'TIMESTAMP']], on=["M_SESSION_UID","M_SESSION_TIME"])
+            finaldfpred_with_timestamp = finaldfpred_with_timestamp.drop(columns=['M_SESSION_TIME'])
+            
+            #final output
+            finaldfpred_with_timestamp['Output'] = finaldfpred_with_timestamp.apply(lambda x:{x['M_TIME_OFFSET']:{'type':x['Weather_Prediction_Class'],x['Weather_Prediction_Class']:x['Ensemble_weather_prob']}},axis=1)
+            finaloutput = finaldfpred_with_timestamp.groupby(['M_SESSION_UID','TIMESTAMP'])['Output'].apply(lambda x:list(x)).reset_index()
+            </code>
+            </pre>
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finaloutput
+            </code>
+            </pre>
+        </div>
+
+        <div class="centercontainer" data-aos="fade-right">
+            <img src="images/output19.png">
+        </div>
+
+        <div class="code" data-aos="fade-right">
+            <pre>
+            <code class="python">
+            finaloutput.to_csv('FINAL_OUTPUT.csv')
+            NN_model.save('saved_model/my_model')
+            </code>
+            </pre>
+        </div>
+
+
     </main>
 
 
@@ -228,9 +985,15 @@
     <script src="./scripts/script.js"></script>
 
     <!-- bootstrap scripts -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

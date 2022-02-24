@@ -1,1 +1,1 @@
-View the website on: formulaaihack2022zadefrontier.netlify.app
+Click <a href="formulaaihack2022zadefrontier.netlify.app">here</a> to view the website.
